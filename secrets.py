@@ -1,7 +1,7 @@
 WIFI_NAME="Home 5G"
 WIFI_PASS="But_Me20231003?"
 
-CLIENT_NAME='front-gate'
+CLIENT_NAME='cow-entrance'
 MQTT_TOPIC='lights/status'
 BROKER_ADDR='192.168.0.114'
 
