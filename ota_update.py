@@ -45,50 +45,51 @@ def check_and_run_updates():
 
     something_done = False
     for filename in latest_versions:
-        file_url = repo_url + filename
-        response = urequests.get(file_url)
+        if filename not in current_versions:    
+            file_url = repo_url + filename
+            response = urequests.get(file_url)
 
-        if response.status_code == 404:
-            print(filename, ' not found on repo')
-            response.close()
-            continue
-        
-        split_pos = filename.rfind('/')
-        if split_pos == -1:
-            path = ''
-            fn = filename
-        else:
-            path = filename[:split_pos]
-            fn = filename[split_pos + 1]
-
-        try:
-            if fn in os.listdir(path):
-                if filename in current_versions:
-                    if current_versions[filename] >= latest_versions[filename]:
-                        print(f'{filename} is up to date.')
-                        continue
-                print(f'Updating {filename}...')
+            if response.status_code == 404:
+                print(filename, ' not found on repo')
+                response.close()
+                continue
+            
+            split_pos = filename.rfind('/')
+            if split_pos == -1:
+                path = ''
+                fn = filename
             else:
-                print(f'Adding {filename}...')
-        except OSError:
-            new_path = Path(path)
-            new_path.mkdir(parents=True, exist_ok=True)
-        
-        latest_code = response.text
-        response.close()
+                path = filename[:split_pos]
+                fn = filename[split_pos + 1]
 
-        with open('latest_code.py', 'w') as f:
-            f.write(latest_code)
-        os.rename('latest_code.py', filename)
-        current_versions[filename] = latest_versions.get(filename)
-        something_done = True
+            try:
+                if fn in os.listdir(path):
+                    if filename in current_versions:
+                        if current_versions[filename] >= latest_versions[filename]:
+                            print(f'{filename} is up to date.')
+                            continue
+                    print(f'Updating {filename}...')
+                else:
+                    print(f'Adding {filename}...')
+            except OSError:
+                new_path = Path(path)
+                new_path.mkdir(parents=True, exist_ok=True)
+            
+            latest_code = response.text
+            response.close()
+
+            with open('latest_code.py', 'w') as f:
+                f.write(latest_code)
+            os.rename('latest_code.py', filename)
+            current_versions[filename] = latest_versions.get(filename)
+            something_done = True
 
     if something_done:
         print('Update completed...')
         with open(version_file, 'w') as f:
-            json.dump(current_versions, f)
+            json.dump(latest_versions, f)
 
-        print('Restarting devive - Ignore error messages')
+        print('Restarting device - Ignore error messages')
         zzz(.5)
         machine.reset()
     else:
