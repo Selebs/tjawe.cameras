@@ -45,7 +45,7 @@ def check_and_run_updates():
 
     something_done = False
     for filename in latest_versions:
-        if filename not in current_versions:    
+        if filename not in current_versions or latest_versions.get(filename) != current_versions.get(filename):    
             file_url = repo_url + filename
             response = urequests.get(file_url)
 
@@ -68,7 +68,7 @@ def check_and_run_updates():
                         if current_versions[filename] >= latest_versions[filename]:
                             print(f'{filename} is up to date.')
                             continue
-                    print(f'Updating {filename}...')
+                        print(f'Updating {filename}...')
                 else:
                     print(f'Adding {filename}...')
             except OSError:
