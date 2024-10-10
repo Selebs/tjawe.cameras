@@ -6,8 +6,10 @@ import ubinascii
 from pathlib import Path
 from time import sleep as zzz
 
+from secrets import GITHUB_URL
+
+repo_url = GITHUB_URL
 version_file = 'versions.txt'
-repo_url = 'https://raw.githubusercontent.com/Selebs/tjawe.cameras/refs/heads/main/'
 version_url = f'{repo_url}{version_file}'
 
 if version_file in os.listdir():
