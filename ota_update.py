@@ -61,7 +61,7 @@ def check_and_run_updates():
             try:
                 if fn in os.listdir(path):
                     if filename in current_versions:
-                        if current_versions[filename] != latest_versions[filename]:
+                        if current_versions[filename] == latest_versions[filename]:
                             print(f'{filename} is up to date.')
                             continue
                         print(f'Updating {filename}...')
