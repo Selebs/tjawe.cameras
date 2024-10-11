@@ -1,8 +1,8 @@
 import os
 import json
-import machine
 import urequests
 from pathlib import Path
+from machine import reset
 from time import sleep as zzz
 from secrets import GITHUB_URL
 
@@ -87,6 +87,6 @@ def check_and_run_updates():
 
         print('Restarting device - Ignore error messages')
         zzz(.5)
-        machine.reset()
+        reset()
     else:
         print('No new updates available...')
