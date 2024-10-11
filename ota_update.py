@@ -2,10 +2,8 @@ import os
 import json
 import machine
 import urequests
-import ubinascii
 from pathlib import Path
 from time import sleep as zzz
-
 from secrets import GITHUB_URL
 
 def check_and_run_updates():
@@ -38,8 +36,6 @@ def check_and_run_updates():
         latest_versions = {}
 
     print(f'Version from GitHub:\n{str(latest_versions)}')
-
-
     response.close()
 
 
@@ -74,15 +70,15 @@ def check_and_run_updates():
             except OSError:
                 new_path = Path(path)
                 new_path.mkdir(parents=True, exist_ok=True)
-            
-            latest_code = response.text
-            response.close()
+            finally:
+                latest_code = response.text
+                response.close()
 
-            with open('latest_code.py', 'w') as f:
-                f.write(latest_code)
-            os.rename('latest_code.py', filename)
-            current_versions[filename] = latest_versions.get(filename)
-            something_done = True
+                with open('latest_code.py', 'w') as f:
+                    f.write(latest_code)
+                os.rename('latest_code.py', filename)
+                current_versions[filename] = latest_versions.get(filename)
+                something_done = True
 
     if something_done:
         print('Update completed...')
