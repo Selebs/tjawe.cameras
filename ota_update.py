@@ -70,6 +70,7 @@ def check_and_run_updates():
             except OSError:
                 new_path = Path(path)
                 new_path.mkdir(parents=True, exist_ok=True)
+                print(f'Adding {filename}...')
             finally:
                 latest_code = response.text
                 response.close()
