@@ -1,9 +1,9 @@
 import os
 import json
 import urequests
+from time import sleep
 from pathlib import Path
 from machine import reset
-from time import sleep as zzz
 from secrets import GITHUB_URL
 
 def check_and_run_updates():
@@ -86,7 +86,7 @@ def check_and_run_updates():
             json.dump(latest_versions, f)
 
         print('Restarting device - Ignore error messages')
-        zzz(.5)
+        sleep(.5)
         reset()
     else:
         print('No new updates available...')
